@@ -23,6 +23,7 @@ const cli = meow(
 		-w, --watch        Watch a directory or file
 		--include-path     Add an include path
 		--skip-source-map  Don't emit source map
+		-js, --js		   Enable less javascript
 
 	Example: Watch ./src for changes and generate css files without sourcemaps
 		$ node-less-chokidar --skip-source-map --watch src
@@ -39,6 +40,10 @@ const cli = meow(
 				type: 'string'
 			},
 			skipSourceMap: {
+				type: 'boolean',
+				default: false
+			},
+			js: {
 				type: 'boolean',
 				default: false
 			}
@@ -137,6 +142,9 @@ const renderFile = (file, options, emitter, done) => {
 		};
 		if (options.skipSourceMap) {
 			delete lessOpts.sourceMap;
+		}
+		if (options.js) {
+			lessOpts.javascriptEnabled = true;
 		}
 		less
 			.render(lessInput, lessOpts)
